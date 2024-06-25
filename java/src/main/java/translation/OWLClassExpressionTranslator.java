@@ -78,14 +78,18 @@ public class OWLClassExpressionTranslator extends OWLTranslator implements OWLCl
     //Object All Values From
     @Override
     public LogicElement visit(OWLObjectAllValuesFrom ce) {
+        OWLDataFactory df = OWLManager.getOWLDataFactory();
         Variable x = getUniqueVariable();
         return new QuantifiedFormula(
             new Quantifier(0), // 0 = universal quantifier
             new Variable[]{x},
             new BinaryFormula(
-                ce.getProperty().accept(new OWLPropertyExpressionTranslator(p, x)),
-                new BinaryConnective(3), // 3 = implication
-                ce.getFiller().accept(new OWLClassExpressionTranslator(x))));
+                df.getOWLThing().accept(new OWLClassExpressionTranslator(p)),
+                new BinaryConnective(0), // 0 = conjunction
+                new BinaryFormula(
+                    ce.getProperty().accept(new OWLPropertyExpressionTranslator(p, x)),
+                    new BinaryConnective(3), // 3 = implication
+                    ce.getFiller().accept(new OWLClassExpressionTranslator(x)))));
     }
 
     //Object Has Value
@@ -203,14 +207,19 @@ public class OWLClassExpressionTranslator extends OWLTranslator implements OWLCl
     // Data All Values From
     @Override
     public LogicElement visit(OWLDataAllValuesFrom ce) {
+        OWLDataFactory df = OWLManager.getOWLDataFactory();
         Variable x = getUniqueVariable();
         return new QuantifiedFormula(
             new Quantifier(0), // universal quantifier
             new Variable[]{x},
             new BinaryFormula(
-                ce.getProperty().accept(new OWLPropertyExpressionTranslator(p, x)),
-                new BinaryConnective(3), // implication
-                ce.getFiller().accept(new OWLDataTranslator(x))
+                df.getOWLThing().accept(new OWLClassExpressionTranslator(p)),
+                new BinaryConnective(0), // 0 = conjunction
+                new BinaryFormula(
+                    ce.getProperty().accept(new OWLPropertyExpressionTranslator(p, x)),
+                    new BinaryConnective(3), // implication
+                    ce.getFiller().accept(new OWLDataTranslator(x))
+                )
             )
         );
     }

@@ -27,9 +27,13 @@ public class TestObjectAllValuesFrom extends StandardClassExpressionTest {
                                 new Quantifier(0),
                                 new Variable[]{x},
                                 new BinaryFormula(
-                                        testProperty0.accept(new OWLPropertyExpressionTranslator(z, x)),
-                                        new BinaryConnective(3),
-                                        testClass0.accept(new OWLClassExpressionTranslator(x))
+                                        df.getOWLThing().accept(new OWLClassExpressionTranslator(z)),
+                                        new BinaryConnective(0),
+                                        new BinaryFormula(
+                                                testProperty0.accept(new OWLPropertyExpressionTranslator(z, x)),
+                                                new BinaryConnective(3),
+                                                testClass0.accept(new OWLClassExpressionTranslator(x))
+                                        )
                                 )
                         )
 
