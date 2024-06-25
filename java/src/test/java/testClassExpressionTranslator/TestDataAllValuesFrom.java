@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDataRange;
 import translation.OWLDataTranslator;
 import translation.OWLPropertyExpressionTranslator;
+import translation.OWLClassExpressionTranslator;
 
 import java.util.stream.Stream;
 
@@ -25,9 +26,13 @@ public class TestDataAllValuesFrom extends StandardClassExpressionTest {
                     new Quantifier(0), // universal quantifier
                     new Variable[]{x},
                     new BinaryFormula(
-                        dpe.accept(new OWLPropertyExpressionTranslator(z, x)),
-                        new BinaryConnective(3), // implication
-                        dr.accept(new OWLDataTranslator(x))
+                        df.getOWLThing().accept(new OWLClassExpressionTranslator(z)),
+                        new BinaryConnective(0), // 0 = conjunction
+                        new BinaryFormula(
+                            dpe.accept(new OWLPropertyExpressionTranslator(z, x)),
+                            new BinaryConnective(3), // implication
+                            dr.accept(new OWLDataTranslator(x))
+                        )
                     )
                 )
             )
